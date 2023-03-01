@@ -31,7 +31,7 @@ public class FornecedorService {
     }
 
     public Optional<Fornecedor> buscaPorId(Long id) {
-        log.info("---Buscando Fornecedor por ID---");
+        log.info("---Buscando Fornecedor por ID informado---");
         return fornecedorRepository.findById(id);
     }
 
