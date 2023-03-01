@@ -10,13 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class Application {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 
-	@RequestMapping("/v1/microsservice")
-	@ResponseBody
-	String home(){
-		return "Microsservice-compras 1.0";
-	}
 }
+
