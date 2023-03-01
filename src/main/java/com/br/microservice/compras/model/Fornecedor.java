@@ -18,5 +18,7 @@ public class Fornecedor {
     private Long id;
     private String nome;
     private String cnpj;
+    private String telefone;
+
 
 }
