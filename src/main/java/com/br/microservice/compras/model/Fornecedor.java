@@ -3,14 +3,12 @@ package com.br.microservice.compras.model;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
 @RequiredArgsConstructor
+@Table(name = "Fornecedor")
 public class Fornecedor {
 
     @Id
