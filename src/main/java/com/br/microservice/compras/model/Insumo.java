@@ -19,6 +19,7 @@ public class Insumo {
     private String marca;
     private String unidade;
     private double valor;
+    private double quantidade;
     private String identificador;
 
 }

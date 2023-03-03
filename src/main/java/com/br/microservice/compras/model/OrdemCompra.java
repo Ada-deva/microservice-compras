@@ -21,7 +21,7 @@ public class OrdemCompra {
     @ManyToOne
     @JoinColumn(name = "id_fornecedor")
     private Fornecedor fornecedor;
-    @OneToMany(mappedBy = "ordem_compra")
+    @OneToMany//(mappedBy = "ordem_compra")
     private List<ItemOrdemCompra> listaInsumos;
 
 
