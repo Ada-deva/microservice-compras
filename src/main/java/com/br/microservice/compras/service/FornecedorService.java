@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -15,15 +16,12 @@ import java.util.Optional;
 public class FornecedorService {
     private final FornecedorRepository fornecedorRepository;
 
-    public void salvar(Fornecedor fornecedor) {
-        Optional<Fornecedor> fornecedorEncontrado = buscarPorCnpj(fornecedor.getCnpj());
-        log.info("---Cadastro de cliente - buscando se já existe CNPJ cadastrado---");
-        if (fornecedorEncontrado.isPresent()) {
-            log.warn("---Cadastro invalido, cnpj já existe em outro cadastro---");
-            throw new IllegalArgumentException("CNPJ já está cadastrado em outro fornecedor.");
-        }
+    public Fornecedor execute(Fornecedor fornecedor) {
         log.info("---Salvando fornecedor no repository---");
-        fornecedorRepository.save(fornecedor);
+        fornecedor.setIdentificador(UUID.randomUUID().toString());
+        log.info("Fornecedor de ID {}", fornecedor.getIdentificador());
+
+        return fornecedorRepository.findByCnpj(fornecedor.getCnpj()).orElse(fornecedorRepository.save(fornecedor));
     }
 
     public Optional<Fornecedor> buscarPorCnpj(String cnpj) {

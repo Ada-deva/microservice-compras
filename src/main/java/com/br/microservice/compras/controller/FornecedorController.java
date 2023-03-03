@@ -36,7 +36,7 @@ public class FornecedorController {
         }
         fornecedor.setCnpj(clearCnpj);
         try {
-            fornecedorService.salvar(fornecedor);
+            fornecedorService.execute(fornecedor);
         } catch (IllegalArgumentException e) {
             log.warn("---Não foi possível cadastro do fornecedor---");
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Não foi possível realizar o cadastro");
