@@ -4,6 +4,7 @@ import com.br.microservice.compras.model.Fornecedor;
 import com.br.microservice.compras.model.Insumo;
 import com.br.microservice.compras.model.ItemOrdemCompra;
 import com.br.microservice.compras.model.OrdemCompra;
+import com.br.microservice.compras.payloads.OrdemCompraRequest;
 import com.br.microservice.compras.repository.OrdemCompraRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,18 +18,19 @@ import java.util.List;
 public class OrdemCompraService {
     private final OrdemCompraRepository ordemCompraRepository;
     private final FornecedorService fornecedorService;
-    private final CreatedOrdemCompraService createdOrdemCompraService;
+    private final CreateOrdemCompraService createOrdemCompraService;
+    private final InsumoService insumoService;
 
-    public void salvar(OrdemCompra ordemCompraRequest) {
+    public void salvar(OrdemCompraRequest ordemCompraRequest) {
         Fornecedor fornecedor = salvarFornecedor(ordemCompraRequest);
         Insumo insumo = salvarInsumo(ordemCompraRequest);
-        OrdemCompra ordemCompra = salvarOrdemCompra(ordemCompraRequest,insumo,fornecedor);
+        OrdemCompra ordemCompra = salvarOrdemCompra(ordemCompraRequest, insumo, fornecedor);
 
         //mandar para o financeiro -> sendPedidoToFinanceiro(fornecedor, insumo, ordemCompra);
 
     }
 
-    private Fornecedor salvarFornecedor(OrdemCompra ordemCompra) {
+    private Fornecedor salvarFornecedor(OrdemCompraRequest ordemCompra) {
         Fornecedor fornecedor = new Fornecedor();
         fornecedor.setNome(ordemCompra.getFornecedor().getNome());
         fornecedor.setCnpj(ordemCompra.getFornecedor().getCnpj());
@@ -36,28 +38,24 @@ public class OrdemCompraService {
     }
 
 
-    private OrdemCompra salvarOrdemCompra(OrdemCompra ordemCompraRequest, Insumo insumo, Fornecedor fornecedor) {
+    private OrdemCompra salvarOrdemCompra(OrdemCompraRequest ordemCompraRequest, Insumo insumo, Fornecedor fornecedor) {
         OrdemCompra ordemCompra = new OrdemCompra();
-//        ordemCompra.setFornecedor(fornecedor);
-//
-//
-//        ItemOrdemCompra itemOrdemCompra = new ItemPedido();
-//        itemOrdemCompra.setQuantidade(ordemCompraRequest.getQuantidade());
-//        itemOrdemCompra.setPreco(ordemCompraRequest.getPrecoCompra());
-//        itemOrdemCompra.setInsumo(insumo);
-//        return createPedidoService.execute(ordemCompra, List.of(itemOrdemCompra));
-        return ordemCompra; // tirar
+        ordemCompra.setFornecedor(fornecedor);
+        ItemOrdemCompra itemOrdemCompra = new ItemOrdemCompra();
+        itemOrdemCompra.setQuantidade(ordemCompraRequest.getQuantidade());
+        itemOrdemCompra.setPreco(ordemCompraRequest.getPrecoCompra());
+        itemOrdemCompra.setInsumo(insumo);
+        return createOrdemCompraService.execute(ordemCompra, List.of(itemOrdemCompra));
     }
 
 
-    private Insumo salvarInsumo(OrdemCompra ordemCompraRequest) {
+    private Insumo salvarInsumo(OrdemCompraRequest ordemCompraRequest) {
         Insumo insumo = new Insumo();
-//        //insumo.setQuantidade(ordemCompraRequest.getunidadequantidade());
-//        insumo.setMarca(ordemCompraRequest.getMarca());
-//        insumo.setNome(ordemCompraRequest.getNome());
-//        insumo.setUnidade(ordemCompraRequest.getUnidade());
-//        return createOrRetrieveProdutoService.execute(insumo);
-        return insumo; //tirar
+        insumo.setQuantidade(ordemCompraRequest.getUnidadeQuantidade());
+        insumo.setMarca(ordemCompraRequest.getMarca());
+        insumo.setNome(ordemCompraRequest.getNome());
+        insumo.setUnidade(ordemCompraRequest.getUnidade());
+        return insumoService.salvar(insumo);
     }
 
 }

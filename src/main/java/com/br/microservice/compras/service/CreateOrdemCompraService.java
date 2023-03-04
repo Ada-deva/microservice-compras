@@ -12,18 +12,17 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CreatedOrdemCompraService {
+public class CreateOrdemCompraService {
     private final OrdemCompraRepository ordemCompraRepository;
     private final ItemOrdemCompraRepository itemOrdemCompraRepository;
-
-    public OrdemCompra execute(OrdemCompra ordemCompra, List<ItemOrdemCompra> itemOrdemCompras) {
-        OrdemCompra salvarOrdem = ordemCompraRepository.save(ordemCompra);
-        itemOrdemCompras
-                .forEach(itemOrdem ->
-                        itemOrdem.setItemOrdemCompraComposedKey
-                                (new ItemOrdemCompraComposedKey(salvarOrdem.getId(), itemOrdem.getInsumo().getId())));
+    public OrdemCompra execute(OrdemCompra ordemCompra, List<ItemOrdemCompra> itemOrdemCompras){
+        OrdemCompra ordemCompraSalvar = ordemCompraRepository.save(ordemCompra);
+        itemOrdemCompras.forEach(itemOrdemCompra ->
+                itemOrdemCompra.setItemOrdemCompraComposedKey(
+                        new ItemOrdemCompraComposedKey(ordemCompraSalvar.getId(),itemOrdemCompra.getInsumo().getId())
+                ));
         itemOrdemCompraRepository.saveAll(itemOrdemCompras);
-        salvarOrdem.setListaInsumos(itemOrdemCompras);
-        return salvarOrdem;
+        ordemCompraSalvar.setListaInsumos(itemOrdemCompras);
+        return ordemCompraSalvar;
     }
 }

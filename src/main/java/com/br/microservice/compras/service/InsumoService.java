@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -16,15 +17,10 @@ public class InsumoService {
     private final InsumoRepository insumoRepository;
 
 
-    public void salvar(Insumo insumo) {
-        Optional<Insumo> insumoEncontrado = buscaPorNome(insumo.getNome());
-        log.info("---Cadastro de insumo, buscando por nome---");
-        if (insumoEncontrado.isPresent()) {
-            log.warn("---Cadastro invalido,já existe um insumo cadastrado com o mesmo nome---");
-            throw new IllegalArgumentException("Nome já está cadastrado em outro insumo.");
-        }
+    public Insumo salvar(Insumo insumo) {
         log.info("---Salvando insumo no repository---");
-        insumoRepository.save(insumo);
+        insumo.setIdentificador(UUID.randomUUID().toString());
+        return insumoRepository.findByNome(insumo.getNome()).orElse(insumoRepository.save(insumo));
     }
 
     public Optional<Insumo> buscaPorNome(String nome) {
