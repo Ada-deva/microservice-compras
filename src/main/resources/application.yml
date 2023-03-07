@@ -5,13 +5,33 @@ spring:
           path: /h2
     datasource:
       driver-class-name: org.h2.Driver
-      url: jdbc:h2:file:~/comprasdb
+      url: jdbc:h2:file:~/compras2db
       username: sa
       password:
     jpa:
       hibernate:
           ddl-auto: update
+    rabbitmq:
+      host: localhost
+      port: 5672
+      username: admin
+      password: admin
+      cache:
+        connection:
+          mode: CONNECTION
+        channel:
+          size: 50
+          checkout-timeout: 10000
 server:
     error:
       include-message: always
     port: 8081
+business:
+  compras:
+    url: ${VARIAVEL_URL:http://localhost:8083/fornecedor}
+    message:
+      queue:
+        fornecedor: fornecedor
+        ordem_compra: ordem_compra
+        pagamento: pagamento_ordem_compra
+        ordem_compra_pago: ordem_compra_pago
