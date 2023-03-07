@@ -1,5 +1,6 @@
 package com.br.microservice.compras.controller;
 
+import com.br.microservice.compras.dto.InsumoDTO;
 import com.br.microservice.compras.model.Insumo;
 import com.br.microservice.compras.service.InsumoService;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +23,14 @@ public class InsumoController {
 
 
     @PostMapping
-    public ResponseEntity<Void> salvar(@RequestBody Insumo insumo) {
+    public ResponseEntity<Void> salvar(@RequestBody InsumoDTO insumo) {
         log.info("---Recebendo informações do Insumo---");
         if (insumo == null || insumo.getNome() == null) {
             log.warn("---Insumo ou nome do insumo null---");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insumo oi nome está nulo");
         }
         try {
-            insumoService.salvar(insumo);
+            insumoService.salvar(insumo.toEntity());
         } catch (IllegalArgumentException e) {
             log.warn("---Não foi possível cadastrar o insumo---");
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Não foi possível realizar o cadastro");
