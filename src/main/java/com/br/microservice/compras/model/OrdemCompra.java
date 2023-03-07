@@ -1,10 +1,10 @@
 package com.br.microservice.compras.model;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,17 +12,33 @@ import java.util.List;
 @RequiredArgsConstructor
 @Data
 @Table(name = "ordem_compra")
+@Builder
+@AllArgsConstructor
 public class OrdemCompra {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @CreatedDate
     private LocalDateTime dataCriacao;
-    @ManyToOne
-    @JoinColumn(name = "id_fornecedor")
-    private Fornecedor fornecedor;
-    @OneToMany//(mappedBy = "ordem_compra")
-    private List<ItemOrdemCompra> listaInsumos;
 
+    private double valorTotal;
+    private int quantidadeTotal;
+
+    @Column(nullable = false)
+    private LocalDate dataVencimento;
+
+    private boolean isPago = false;
+
+    private LocalDateTime dataPagamento;
+
+    @OneToMany
+    @JoinColumn(name = "insumo_id")
+    private List<Insumo> listaInsumos;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "fornecedor_id")
+    private Fornecedor fornecedor;
+    private String identificador;
 
 }

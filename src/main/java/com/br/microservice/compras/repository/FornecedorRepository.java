@@ -8,6 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface FornecedorRepository extends CrudRepository<Fornecedor,Long> {
-    Optional<Fornecedor> findByCnpj (String cnpj);
-    //Optional<Fornecedor> findById (Long id);
+    Optional<Fornecedor> findByCpfOuCnpj (String cnpj);
 }

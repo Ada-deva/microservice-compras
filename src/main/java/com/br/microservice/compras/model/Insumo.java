@@ -1,5 +1,6 @@
 package com.br.microservice.compras.model;
 
+import com.br.microservice.compras.enums.TipoItem;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +20,8 @@ public class Insumo {
     private String marca;
     private String unidade;
     private double valor;
-    private double quantidade;
-    private String identificador;
+    private int quantidade;
+    @Column(nullable = false)
+    private TipoItem item;
 
 }
